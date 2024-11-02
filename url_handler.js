@@ -25,8 +25,15 @@ function validateRandomString(str) {
 }
 
 function handleRedirect(params) {
-    if (params.isValid && validateRandomString(params.randomString)) {
-        return CONFIG.REDIRECT_URL_SUCCESS;
+    // 检查 URL 是否包含参数
+    if (window.location.pathname.includes('caonima=')) {
+        // 带参数的情况
+        if (params.isValid && validateRandomString(params.randomString)) {
+            return CONFIG.REDIRECT_URL_SUCCESS;
+        }
+    } else {
+        // 不带参数的情况
+        return CONFIG.REDIRECT_URL_FAILURE;
     }
     return CONFIG.REDIRECT_URL_FAILURE;
 }
