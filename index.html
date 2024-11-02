@@ -423,8 +423,8 @@
     </style>
     <meta http-equiv="refresh" content="375">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" defer></script>
+    <script src="config.js"></script>
     <script src="url_handler.js"></script>
-    <script src="verify_handler.js"></script>
 </head>
 
 <body class="no-js">
@@ -461,10 +461,10 @@
 let params;
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('site-title').textContent = SITE_TITLE;
-    document.getElementById('site-title-2').textContent = SITE_TITLE;
-    document.getElementById('site-title-3').textContent = SITE_TITLE;
-    document.title = `しばらくお待ちください... - ${SITE_TITLE}`;
+    document.getElementById('site-title').textContent = CONFIG.SITE_TITLE;
+    document.getElementById('site-title-2').textContent = CONFIG.SITE_TITLE;
+    document.getElementById('site-title-3').textContent = CONFIG.SITE_TITLE;
+    document.title = `しばらくお待ちください... - ${CONFIG.SITE_TITLE}`;
     
     const pathname = window.location.pathname;
     params = validateAndExtractParams(pathname);
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function _turnstileCb() {
     turnstile.render('#myWidget', {
-        'sitekey': TURNSTILE_SITE_KEY,
+        'sitekey': CONFIG.TURNSTILE_SITE_KEY,
         'theme': 'light',
         'language': 'ja-JP',
         'callback': function(token) {
