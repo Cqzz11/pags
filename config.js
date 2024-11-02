@@ -1,12 +1,7 @@
+// 这个文件会被 worker 动态替换
 const CONFIG = {
-    SITE_TITLE: window.SITE_TITLE,
-    TURNSTILE_SITE_KEY: window.TURNSTILE_SITE_KEY,
-    REDIRECT_URL_SUCCESS: window.REDIRECT_URL_SUCCESS,
-    REDIRECT_URL_FAILURE: window.REDIRECT_URL_FAILURE
+    SITE_TITLE: "",
+    TURNSTILE_SITE_KEY: "",
+    REDIRECT_URL_SUCCESS: "",
+    REDIRECT_URL_FAILURE: ""
 }; 
-
-// 验证所有必需的环境变量是否都已设置
-if (!CONFIG.SITE_TITLE || !CONFIG.TURNSTILE_SITE_KEY || 
-    !CONFIG.REDIRECT_URL_SUCCESS || !CONFIG.REDIRECT_URL_FAILURE) {
-    console.error('必需的环境变量未设置');
-} 
