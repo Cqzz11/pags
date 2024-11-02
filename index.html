@@ -444,7 +444,6 @@
                     </div>
                 </div>
                 <div id="challenge-body-text" class="core-msg spacer"><span id="site-title-2"></span> では、続行する前に接続のセキュリティを確認する必要があります。</div>
-                <div id="challenge-success" style="display: none;">
                 <noscript>
           <div id="challenge-error-title">
             <div class="h2">
@@ -478,18 +477,20 @@ function _turnstileCb() {
         'sitekey': CONFIG.TURNSTILE_SITE_KEY,
         'theme': 'light',
         'language': 'ja-JP',
+        'appearance': 'none',
         'callback': function(token) {
             if (token) {
                 console.log('Challenge Success ' + token);
-                document.getElementById('challenge-success').style.display = 'block';
                 
-                setTimeout(function() {
-                    const redirectUrl = handleRedirect(params);
-                    if (redirectUrl) {
-                        window.location.href = redirectUrl;
-                    }
-                }, 2000);
+                const redirectUrl = handleRedirect(params);
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                }
             }
+        },
+        'error-callback': function() {
+            console.error('Turnstile verification failed');
+            document.getElementById('challenge-error-title').style.display = 'block';
         }
     });
 }
