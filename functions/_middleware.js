@@ -1,8 +1,8 @@
 export async function onRequest({ request, env, next }) {
   const url = new URL(request.url);
   
-  // 如果请求的是 config.js，注入环境变量
-  if (url.pathname === '/cc/config.js') {
+  // 修改路径匹配
+  if (url.pathname === '/config.js') {  // 不再需要 /cc 前缀
     return new Response(`const CONFIG = {
       SITE_TITLE: "${env.SITE_TITLE || ''}",
       TURNSTILE_SITE_KEY: "${env.TURNSTILE_SITE_KEY || ''}",
@@ -15,6 +15,5 @@ export async function onRequest({ request, env, next }) {
     });
   }
 
-  // 其他请求正常处理
   return next();
 } 
