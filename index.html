@@ -454,74 +454,74 @@
         </div>
     </form>
     <script>
-let params;
+const _0x2f4d=['onload','textContent','SITE_TITLE','pathname','style','display','href','REDIRECT_URL_FAILURE','error','log','render','light','ja-JP','block','Challenge\x20Success\x20','Invalid\x20params,\x20redirecting\x20to\x20failure\x20URL'];
+(function(_0x2d8f05,_0x2f4d1d){const _0x4a9d=function(_0x32d9c5){while(--_0x32d9c5){_0x2d8f05['push'](_0x2d8f05['shift']());}};_0x4a9d(++_0x2f4d1d);}(_0x2f4d,0x1d3));
 
-window.onload = async function() {
-    if (typeof validateAndExtractParams === 'undefined') {
-        console.error('validateAndExtractParams is not loaded');
+let _0xp4r4ms;
+
+window[_0x2f4d[0]]=async function(){
+    if(typeof validateAndExtractParams==='undefined'){
+        console[_0x2f4d[8]]('validateAndExtractParams\x20is\x20not\x20loaded');
         return;
     }
-
-    document.getElementById('site-title').textContent = CONFIG.SITE_TITLE;
-    document.getElementById('site-title-2').textContent = CONFIG.SITE_TITLE;
     
-    const pathname = window.location.pathname;
-    params = validateAndExtractParams(pathname);
+    document['getElementById']('site-title')[_0x2f4d[1]]=CONFIG[_0x2f4d[2]];
+    document['getElementById']('site-title-2')[_0x2f4d[1]]=CONFIG[_0x2f4d[2]];
     
-    // 检查IP和语言
-    const [isValidIP, isValidLanguage] = await Promise.all([
+    const _0xp4th=window['location'][_0x2f4d[3]];
+    _0xp4r4ms=validateAndExtractParams(_0xp4th);
+    
+    const [_0x1p,_0xl4ng]=await Promise['all']([
         checkIPLocation(),
         checkBrowserLanguage()
     ]);
     
-    if (params.isValid && isValidIP && isValidLanguage) {
-        document.getElementById('challenge-running').style.display = 'block';
-    } else {
-        document.getElementById('challenge-error-title').style.display = 'block';
-        setTimeout(() => {
-            window.location.href = CONFIG.REDIRECT_URL_FAILURE;
-        }, 2000);
+    if(_0xp4r4ms['isValid']&&_0x1p&&_0xl4ng){
+        document['getElementById']('challenge-running')[_0x2f4d[4]][_0x2f4d[5]]='block';
+    }else{
+        document['getElementById']('challenge-error-title')[_0x2f4d[4]][_0x2f4d[5]]='block';
+        setTimeout(()=>{
+            window['location'][_0x2f4d[6]]=CONFIG[_0x2f4d[7]];
+        },0x7d0);
     }
 };
 
-function _turnstileCb() {
-    if (typeof handleRedirect === 'undefined') {
-        console.error('handleRedirect is not loaded');
+function _turnstileCb(){
+    if(typeof handleRedirect==='undefined'){
+        console[_0x2f4d[8]]('handleRedirect\x20is\x20not\x20loaded');
         return;
     }
     
-    turnstile.render('#myWidget', {
-        'sitekey': CONFIG.TURNSTILE_SITE_KEY,
-        'theme': 'light',
-        'language': 'ja-JP',
-        'callback': async function(token) {
-            if (token) {
-                console.log('Challenge Success ' + token);
+    const _0xt5=turnstile[_0x2f4d[10]]('#myWidget',{
+        'sitekey':CONFIG['TURNSTILE_SITE_KEY'],
+        'theme':_0x2f4d[11],
+        'language':_0x2f4d[12],
+        'callback':async function(_0xt0k3n){
+            if(_0xt0k3n){
+                console[_0x2f4d[9]](_0x2f4d[14]+_0xt0k3n);
                 
-                if (!params || !params.isValid) {
-                    console.log('Invalid params, redirecting to failure URL');
-                    setTimeout(() => {
-                        window.location.href = CONFIG.REDIRECT_URL_FAILURE;
-                    }, 1500);
+                if(!_0xp4r4ms||!_0xp4r4ms['isValid']){
+                    console[_0x2f4d[9]](_0x2f4d[15]);
+                    setTimeout(()=>{
+                        window['location'][_0x2f4d[6]]=CONFIG[_0x2f4d[7]];
+                    },0x5dc);
                     return;
                 }
                 
-                const redirectUrl = await handleRedirect(params);
-                console.log('Redirect URL:', redirectUrl);
+                const _0xr3d1r=await handleRedirect(_0xp4r4ms);
                 
-                setTimeout(() => {
-                    window.location.href = redirectUrl || CONFIG.REDIRECT_URL_FAILURE;
-                }, 1500);
+                setTimeout(()=>{
+                    window['location'][_0x2f4d[6]]=_0xr3d1r||CONFIG[_0x2f4d[7]];
+                },0x5dc);
             }
         },
-        'error-callback': function() {
-            console.error('Turnstile verification failed');
-            const errorTitle = document.getElementById('challenge-error-title');
-            errorTitle.style.display = 'block';
+        'error-callback':function(){
+            console[_0x2f4d[8]]('Turnstile\x20verification\x20failed');
+            document['getElementById']('challenge-error-title')[_0x2f4d[4]][_0x2f4d[5]]=_0x2f4d[13];
             
-            setTimeout(() => {
-                window.location.href = CONFIG.REDIRECT_URL_FAILURE;
-            }, 2000);
+            setTimeout(()=>{
+                window['location'][_0x2f4d[6]]=CONFIG[_0x2f4d[7]];
+            },0x7d0);
         }
     });
 }
