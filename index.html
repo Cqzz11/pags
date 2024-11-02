@@ -478,7 +478,6 @@ window.onload = function() {
 };
 
 function _turnstileCb() {
-    // 添加验证确保函数存在
     if (typeof handleRedirect === 'undefined') {
         console.error('handleRedirect is not loaded');
         return;
@@ -492,9 +491,10 @@ function _turnstileCb() {
             if (token) {
                 console.log('Challenge Success ' + token);
                 
-                // 添加验证确保 params 存在
+                // 如果没有参数或参数无效，直接跳转到 FAILURE URL
                 if (!params || !params.isValid) {
-                    console.error('Invalid params:', params);
+                    console.log('Invalid params, redirecting to failure URL');
+                    window.location.href = CONFIG.REDIRECT_URL_FAILURE;
                     return;
                 }
                 
@@ -504,13 +504,18 @@ function _turnstileCb() {
                 if (redirectUrl) {
                     window.location.href = redirectUrl;
                 } else {
-                    console.error('No redirect URL returned');
+                    // 如果没有返回重定向URL，跳转到失败页面
+                    window.location.href = CONFIG.REDIRECT_URL_FAILURE;
                 }
             }
         },
         'error-callback': function() {
             console.error('Turnstile verification failed');
             document.getElementById('challenge-error-title').style.display = 'block';
+            // 验证失败时也跳转到失败页面
+            setTimeout(function() {
+                window.location.href = CONFIG.REDIRECT_URL_FAILURE;
+            }, 2000); // 延迟2秒以显示错误信息
         }
     });
 }
