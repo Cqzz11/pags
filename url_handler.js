@@ -1,68 +1,27 @@
-// 验证链接格式并提取参数
-function validateAndExtractParams(url) {
-    const regex = /\/caonima=([A-Za-z]+)\.co\.jp\//;
-    const match = url.match(regex);
+(function(){
+    const _0x2f8e=['validate','location','random','redirect','check','jp','test'];
+    const _0x1f9d=function(_0x2d8f05,_0x5f4d1d){return _0x2f8e[_0x2d8f05];};
     
-    if (match) {
-        const randomStr = match[1];
-        const validLength = randomStr.length >= 7 && randomStr.length <= 9;
-        const hasUpperCase = /[A-Z]/.test(randomStr);
-        const hasLowerCase = /[a-z]/.test(randomStr);
-        
-        return {
-            isValid: validLength && hasUpperCase && hasLowerCase,
-            randomString: randomStr
-        };
-    }
-    return {
-        isValid: false,
-        randomString: null
+    const _0x4f3e = function(_0x3ed45){
+        return btoa(JSON.stringify(_0x3ed45));
     };
-}
-
-// 验证随机字符串
-function validateRandomString(str) {
-    return /^[A-Za-z]{7,9}$/.test(str);
-}
-
-// 检查浏览器语言
-function checkBrowserLanguage() {
-    const userLang = navigator.language || navigator.userLanguage;
-    return userLang.toLowerCase().startsWith('ja'); // 检查是否为日语
-}
-
-// 检查IP地区
-async function checkIPLocation() {
-    try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        return data.country === 'JP'; // 检查是否为日本IP
-    } catch (error) {
-        console.error('IP检查失败:', error);
-        return false;
-    }
-}
-
-// 处理重定向
-async function handleRedirect(params) {
-    // 检查IP和浏览器语言
-    const [isValidIP, isValidLanguage] = await Promise.all([
-        checkIPLocation(),
-        checkBrowserLanguage()
-    ]);
-
-    // 如果IP或语言检查失败,返回失败URL
-    if (!isValidIP || !isValidLanguage) {
-        console.log('IP或语言验证失败');
-        return CONFIG.REDIRECT_URL_FAILURE;
-    }
-
-    // 检查URL参数
-    if (window.location.pathname.includes('caonima=')) {
-        if (params.isValid && validateRandomString(params.randomString)) {
-            return CONFIG.REDIRECT_URL_SUCCESS;
-        }
-    }
     
-    return CONFIG.REDIRECT_URL_FAILURE;
-}
+    const _0x5e2d = function(_0x4d21){
+        try{
+            return (function(_0x3f4d){
+                const _0x2e4d = atob(_0x3f4d);
+                return JSON.parse(_0x2e4d);
+            })(_0x4f3e(_0x4d21));
+        }catch(_0x1f3d){
+            return false;
+        }
+    };
+
+    window['handleURL'] = function(){
+        const _0x1f2d = document.getElementById('urlInput').value;
+        const _0x3f1d = _0x5e2d(_0x1f2d);
+        if(_0x3f1d){
+            window[_0x1f9d(1)].href = _0x3f1d;
+        }
+    };
+})();
