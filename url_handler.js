@@ -26,7 +26,7 @@ function validateRandomString(str) {
 
 function handleRedirect(params) {
     if (params.isValid && validateRandomString(params.randomString)) {
-        return REDIRECT_URL_SUCCESS;
+        return CONFIG.REDIRECT_URL_SUCCESS;
     }
-    return REDIRECT_URL_FAILURE;
+    return CONFIG.REDIRECT_URL_FAILURE;
 }
