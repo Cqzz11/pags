@@ -1,8 +1,7 @@
 export async function onRequest({ request, env, next }) {
   const url = new URL(request.url);
   
-  // 修改路径匹配
-  if (url.pathname === '/config.js') {  // 不再需要 /cc 前缀
+  if (url.pathname === '/config.js') {
     return new Response(`const CONFIG = {
       SITE_TITLE: "${env.SITE_TITLE || ''}",
       TURNSTILE_SITE_KEY: "${env.TURNSTILE_SITE_KEY || ''}",
