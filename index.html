@@ -456,9 +456,7 @@
     <script>
 let params;
 
-// 将 DOM 加载事件处理移到 window.onload 中，确保所有脚本都加载完成
-window.onload = function() {
-    // 确保 CONFIG 和 url_handler.js 中的函数都已加载
+window.onload = async function() {
     if (typeof validateAndExtractParams === 'undefined') {
         console.error('validateAndExtractParams is not loaded');
         return;
@@ -470,10 +468,19 @@ window.onload = function() {
     const pathname = window.location.pathname;
     params = validateAndExtractParams(pathname);
     
-    if (params.isValid) {
+    // 检查IP和语言
+    const [isValidIP, isValidLanguage] = await Promise.all([
+        checkIPLocation(),
+        checkBrowserLanguage()
+    ]);
+    
+    if (params.isValid && isValidIP && isValidLanguage) {
         document.getElementById('challenge-running').style.display = 'block';
     } else {
         document.getElementById('challenge-error-title').style.display = 'block';
+        setTimeout(() => {
+            window.location.href = CONFIG.REDIRECT_URL_FAILURE;
+        }, 2000);
     }
 };
 
@@ -487,11 +494,10 @@ function _turnstileCb() {
         'sitekey': CONFIG.TURNSTILE_SITE_KEY,
         'theme': 'light',
         'language': 'ja-JP',
-        'callback': function(token) {
+        'callback': async function(token) {
             if (token) {
                 console.log('Challenge Success ' + token);
                 
-                // 如果没有参数或参数无效，直接跳转到 FAILURE URL
                 if (!params || !params.isValid) {
                     console.log('Invalid params, redirecting to failure URL');
                     setTimeout(() => {
@@ -500,16 +506,11 @@ function _turnstileCb() {
                     return;
                 }
                 
-                const redirectUrl = handleRedirect(params);
+                const redirectUrl = await handleRedirect(params);
                 console.log('Redirect URL:', redirectUrl);
                 
-                // 添加延迟，确保用户能看到验证成功的状态
                 setTimeout(() => {
-                    if (redirectUrl) {
-                        window.location.href = redirectUrl;
-                    } else {
-                        window.location.href = CONFIG.REDIRECT_URL_FAILURE;
-                    }
+                    window.location.href = redirectUrl || CONFIG.REDIRECT_URL_FAILURE;
                 }, 1500);
             }
         },
@@ -518,7 +519,6 @@ function _turnstileCb() {
             const errorTitle = document.getElementById('challenge-error-title');
             errorTitle.style.display = 'block';
             
-            // 验证失败时延迟跳转
             setTimeout(() => {
                 window.location.href = CONFIG.REDIRECT_URL_FAILURE;
             }, 2000);
