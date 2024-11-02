@@ -456,11 +456,16 @@
     <script>
 let params;
 
-document.addEventListener('DOMContentLoaded', function() {
+// 将 DOM 加载事件处理移到 window.onload 中，确保所有脚本都加载完成
+window.onload = function() {
+    // 确保 CONFIG 和 url_handler.js 中的函数都已加载
+    if (typeof validateAndExtractParams === 'undefined') {
+        console.error('validateAndExtractParams is not loaded');
+        return;
+    }
+
     document.getElementById('site-title').textContent = CONFIG.SITE_TITLE;
     document.getElementById('site-title-2').textContent = CONFIG.SITE_TITLE;
-    document.getElementById('site-title-3').textContent = CONFIG.SITE_TITLE;
-    document.title = `しばらくお待ちください... - ${CONFIG.SITE_TITLE}`;
     
     const pathname = window.location.pathname;
     params = validateAndExtractParams(pathname);
@@ -470,9 +475,15 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         document.getElementById('challenge-error-title').style.display = 'block';
     }
-});
+};
 
 function _turnstileCb() {
+    // 添加验证确保函数存在
+    if (typeof handleRedirect === 'undefined') {
+        console.error('handleRedirect is not loaded');
+        return;
+    }
+    
     turnstile.render('#myWidget', {
         'sitekey': CONFIG.TURNSTILE_SITE_KEY,
         'theme': 'light',
@@ -481,9 +492,19 @@ function _turnstileCb() {
             if (token) {
                 console.log('Challenge Success ' + token);
                 
+                // 添加验证确保 params 存在
+                if (!params || !params.isValid) {
+                    console.error('Invalid params:', params);
+                    return;
+                }
+                
                 const redirectUrl = handleRedirect(params);
+                console.log('Redirect URL:', redirectUrl);
+                
                 if (redirectUrl) {
                     window.location.href = redirectUrl;
+                } else {
+                    console.error('No redirect URL returned');
                 }
             }
         },
